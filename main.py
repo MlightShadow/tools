@@ -1,15 +1,18 @@
 from urllib import request
 
-def doRequest(url, data, method):
-    response = request.urlopen(url)
-    page = response.read().decode('utf-8')
-    return page
+class Spider:
+
+    def doRequest(self, url, data, method):
+        response = request.urlopen(url)
+        page = response.read().decode('utf-8')
+        return page
 
 	
-def main():
-    url = input('input url')
-    print (doRequest(url, None, None))
+    def doMain(self):
+        url = input('input url')
+        print (self.doRequest(url, None, None))
 
 
-
-main()
+if __name__ == "__main__":
+    spider = Spider()
+    spider.doMain()
