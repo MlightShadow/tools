@@ -4,7 +4,9 @@ import urllib.request
 from bs4 import BeautifulSoup
 from selenium import webdriver
 path = 'D:\chromedriver\chromedriver.exe'
-mainURL = 'http://nt.58.com/zptaobaotuiguang/?PGTID=0d202408-0018-afba-ca68-482ac7a3741e&ClickID=2'
+#mainURL= 'http://nt.58.com/tech/?PGTID=0d202408-0018-a194-29f2-6653f2972429&ClickID=4'
+
+mainURL = input('输入mainURL\n')
 
 driver = webdriver.Chrome(executable_path=path)
 driver.get(mainURL)
