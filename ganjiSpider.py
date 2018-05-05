@@ -4,21 +4,24 @@ from html.parser import HTMLParser
 import time
 import re
 
+
 def getSoup(url):
     return BeautifulSoup(requests.get(url).text, 'html.parser')
 
-def getNextPage(soup):
+def getNextPage(soup, prefixURL):
     nextPage = soup.find_all('a',class_='next', attrs={'href': True})
     nextLink = ''
     for link in nextPage:
         nextLink = link['href']
+    if(nextLink != ''):
+        nextLink = prefixURL + nextLink
     return nextLink
 
 def getJobList(soup):
-    jobList = soup.find_all('div',class_='job_name')
+    jobList = soup.find_all('a',class_='list_title')
     num = 0
     for link in jobList:
-        list.append(link.a['href'])
+        list.append(link['href'])
         num += 1
     return num
 
@@ -30,13 +33,13 @@ def getTextByClass(soup, className):
     return tagText
 
 def getDetail(soup):
-    compName = getTextByClass(soup,'comp_baseInfo_title')
-    posTitle = getTextByClass(soup,'pos_title')
-    posName = getTextByClass(soup,'pos_name')
-    welfare = getTextByClass(soup,'pos_welfare_item')
-    condition = getTextByClass(soup,'item_condition')
-    area = getTextByClass(soup,'pos_area_item')
-    salary = getTextByClass(soup,'pos_salary')
+    compName = getTextByClass(soup,'company-info')
+    posTitle = getTextByClass(soup,'title-line')
+    posName = getTextByClass(soup,'title-line')
+    welfare = getTextByClass(soup,'welfare-line')
+    condition = getTextByClass(soup,'description-label')
+    area = getTextByClass(soup,'location-line')
+    salary = getTextByClass(soup,'salary-line')
 
     print(compName)
     time.sleep(0.05)
@@ -55,20 +58,22 @@ def getDetail(soup):
 
 
 if __name__ == '__main__':
-    mainURL = input('请输入起始URL\n')
-    #mainURL = 'http://nt.58.com/tech/?PGTID=0d202408-0018-a194-29f2-6653f2972429&ClickID=4'
+    #mainURL = input('请输入起始URL\n')
+    mainURL = 'http://nantong.ganji.com/zpqichexiaoshou/'
     list = []
     scanNum = 0
     readNum = 0
     pageLink = mainURL
-    print('扫描开始')
+    end = pageLink.index('.com') + 4
+    prefixURL = pageLink[0 : end]
+    print('扫描开始' + prefixURL)
 
     while(pageLink != ''):
         print(pageLink)
         soup = getSoup(pageLink)
         scanNum += getJobList(soup)
         print('总计链接数:' + str(scanNum))
-        pageLink = getNextPage(soup)
+        pageLink = getNextPage(soup, prefixURL)
 
     for item in list:
         print(item)
