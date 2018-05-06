@@ -9,3 +9,4 @@ wordcloud = WordCloud(font_path="YaHei.Consolas.1.12_0.ttf").generate(text)
 plt.imshow(wordcloud, interpolation='bilinear')
 plt.axis("off")
 plt.show()
+#todo
