@@ -29,7 +29,7 @@ def getTextByClass(soup, className):
             tagText += (( '' if tagText == '' else ',') + str(string).replace('\r', '').replace('\t', '').replace('\n', ''))
     return tagText
 
-def getDetail(soup):
+def getDetail(soup, url):
     compName = getTextByClass(soup,'comp_baseInfo_title')
     posTitle = getTextByClass(soup,'pos_title')
     posName = getTextByClass(soup,'pos_name')
@@ -39,20 +39,12 @@ def getDetail(soup):
     salary = getTextByClass(soup,'pos_salary')
 
     print(compName)
-    time.sleep(0.05)
     print('\n---'+posTitle)
-    time.sleep(0.05)
     print('\n---'+posName)
-    time.sleep(0.05)
     print('\n---'+welfare)
-    time.sleep(0.05)
     print('\n---'+condition)
-    time.sleep(0.05)
     print('\n---'+area)
-    time.sleep(0.05)
     print('\n---'+salary)
-    time.sleep(0.05)
-
 
 if __name__ == '__main__':
     mainURL = input('请输入起始URL\n')
@@ -72,12 +64,11 @@ if __name__ == '__main__':
 
     for item in list:
         print(item)
-        time.sleep(0.05)
+        time.sleep(0.5)
         soup = getSoup(item)
-        getDetail(soup)
+        getDetail(soup, item)
         readNum += 1
         print('总计链接数:' + str(scanNum) + ' 当前扫描:' + str(readNum) + ' 进度:' + str(round(readNum/scanNum * 100, 2) )+'%')
-        time.sleep(0.05)
 
 
     print('扫描完成')
