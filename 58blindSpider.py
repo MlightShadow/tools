@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
 import requests
 from bs4 import BeautifulSoup
 from html.parser import HTMLParser
 import time
-import re
+import dbConnector
 
 def getSoup(url):
     return BeautifulSoup(requests.get(url).text, 'html.parser')
@@ -30,25 +31,34 @@ def getTextByClass(soup, className):
     return tagText
 
 def getDetail(soup, url):
-    compName = getTextByClass(soup,'comp_baseInfo_title')
-    posTitle = getTextByClass(soup,'pos_title')
-    posName = getTextByClass(soup,'pos_name')
-    welfare = getTextByClass(soup,'pos_welfare_item')
-    condition = getTextByClass(soup,'item_condition')
-    area = getTextByClass(soup,'pos_area_item')
-    salary = getTextByClass(soup,'pos_salary')
+    insert_data = {
+        'compName' : getTextByClass(soup,'comp_baseInfo_title'),
+        'posTitle' : getTextByClass(soup,'pos_title'),
+        'posName' : getTextByClass(soup,'pos_name'),
+        'posAddress' : getTextByClass(soup,'pos-area'),
+        'posSalary': getTextByClass(soup,'pos_salary'),
+        'posWelfare' : getTextByClass(soup,'pos_welfare_item'),
+        'posConditionLabel' : getTextByClass(soup,'item_condition'),
+        'posConditionDetail' : getTextByClass(soup,'posDes'),
+        'posCompDetail' : getTextByClass(soup,'comIntro'),
+        'url' : url
+    }
+    print(insert_data.get('compName'))
+    print('\n---'+insert_data.get('posTitle'))
+    print('\n---'+insert_data.get('posName'))
+    print('\n---'+insert_data.get('posAddress'))
+    print('\n---'+insert_data.get('posSalary'))
+    print('\n---'+insert_data.get('posWelfare'))
+    print('\n---'+insert_data.get('posConditionLabel'))
+    print('\n---'+insert_data.get('posConditionDetail'))
+    print('\n---'+insert_data.get('posCompDetail'))
+    print('\n---'+insert_data.get('url'))
 
-    print(compName)
-    print('\n---'+posTitle)
-    print('\n---'+posName)
-    print('\n---'+welfare)
-    print('\n---'+condition)
-    print('\n---'+area)
-    print('\n---'+salary)
+    dbConnector.executeSQL(insert_data)
 
 if __name__ == '__main__':
-    mainURL = input('请输入起始URL\n')
-    #mainURL = 'http://nt.58.com/tech/?PGTID=0d202408-0018-a194-29f2-6653f2972429&ClickID=4'
+    #mainURL = input('请输入起始URL\n')
+    mainURL = 'http://nt.58.com/job/'
     list = []
     scanNum = 0
     readNum = 0
@@ -61,14 +71,20 @@ if __name__ == '__main__':
         scanNum += getJobList(soup)
         print('总计链接数:' + str(scanNum))
         pageLink = getNextPage(soup)
+    
 
+    
     for item in list:
-        print(item)
-        time.sleep(0.5)
-        soup = getSoup(item)
-        getDetail(soup, item)
-        readNum += 1
-        print('总计链接数:' + str(scanNum) + ' 当前扫描:' + str(readNum) + ' 进度:' + str(round(readNum/scanNum * 100, 2) )+'%')
+        try:
+            print(item)
+            time.sleep(0.5)
+            soup = getSoup(item)
+            getDetail(soup, item)
+            readNum += 1
+            print('总计链接数:' + str(scanNum) + ' 当前扫描:' + str(readNum) + ' 进度:' + str(round(readNum/scanNum * 100, 2) )+'%')
+        except Exception as e:
+            continue
+
 
 
     print('扫描完成')
