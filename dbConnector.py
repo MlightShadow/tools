@@ -35,11 +35,12 @@ def getInfo():
     cursor = db.cursor()
     list = []
     try:
-        insert_template = '''select compName from tb_posall'''
+        insert_template = '''select posTitle, posName from tb_posall'''
         cursor.execute(insert_template)
         results = cursor.fetchall()
         for row in results:
             list.append(row[0])
+            list.append(row[1])
     except Exception as e:
         list = []
         print(repr(e))
