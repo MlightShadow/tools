@@ -58,7 +58,7 @@ def getDetail(soup, url):
 
 if __name__ == '__main__':
     #mainURL = input('请输入起始URL\n')
-    mainURL = 'http://nt.58.com/job/'
+    mainURL = 'http://sh.58.com/tech/?PGTID=0d003655-0000-0d46-dbf1-c45af92cc7e1&ClickID=1'
     list = []
     scanNum = 0
     readNum = 0

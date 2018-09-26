@@ -2,7 +2,7 @@
 import pymysql
 
 def insertJobInfo(cursor, data):
-    insert_template = '''insert into tb_posall (compName, posTitle, posName, posAddress, posSalary, posWelfare, posConditionLabel, posConditionDetail, posCompDetail, url) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);'''
+    insert_template = '''insert into tb_pos (compName, posTitle, posName, posAddress, posSalary, posWelfare, posConditionLabel, posConditionDetail, posCompDetail, url) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);'''
     compName = data.get('compName')
     posTitle = data.get('posTitle')
     posName = data.get('posName')
@@ -35,7 +35,7 @@ def getInfo():
     cursor = db.cursor()
     list = []
     try:
-        insert_template = '''select posTitle, posName from tb_posall'''
+        insert_template = '''select posConditionDetail, posConditionLabel from tb_pos'''
         cursor.execute(insert_template)
         results = cursor.fetchall()
         for row in results:
