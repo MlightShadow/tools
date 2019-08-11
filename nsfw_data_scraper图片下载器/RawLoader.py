@@ -32,7 +32,8 @@ def processTask(arrImageURL, savePath, No, broNum):
         
 
 if __name__ == '__main__':
-    multiprocessing.freeze_support()
+    # 发布windows应用时加上
+    # multiprocessing.freeze_support()
     filename = 'url.txt'
     savePath = './img/'
     if(not os.path.exists(savePath)):
